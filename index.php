@@ -75,8 +75,9 @@ require_once __DIR__ . '/includes/api.php';
                     </h1>
 
                     <p class="hero-sub">
-                        Expert-led courses, live mock tests, and Live Interactive Classes —
-                        everything you need to crack NEB Exams.
+                        Master the NEB Syllabus with Nepal’s top educators. Access AI-powered mock tests,
+                        chapter-wise digital notes, and live interactive sessions designed to turn
+                        your preparation into top board ranks.
                     </p>
                 </div>
             <?php endif; ?>
@@ -224,7 +225,6 @@ require_once __DIR__ . '/includes/api.php';
                                 allowfullscreen>
                             </iframe>
                         </div>
-
 
                         <button type="button" id="btn-register-another" class="secondary-outline-btn">
                             Register Another Student
