@@ -93,6 +93,10 @@ header {
     transition: transform 0.15s, box-shadow 0.15s;
 }
 
+.hero-left{
+    width: 100%;
+}
+
 .header-cta:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(30,34,53,0.3);
@@ -616,7 +620,7 @@ input:focus, select:focus {
 /* ── SOCIAL GRID ── */
 .social-grid {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
 }
  
