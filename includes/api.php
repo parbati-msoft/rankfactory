@@ -34,6 +34,7 @@ if ($isLocal) {
 
 define('URL_REGISTER_STUDENT', API_BASE_URL . '/register-student');
 define('URL_INSTITUTIONS',      API_BASE_URL . '/institutions');
+define('URL_MEDIA', API_BASE_URL . '/media-file');
 define('API_TIMEOUT', $_ENV['API_TIMEOUT'] ?? 15);
 
 /**
@@ -118,3 +119,21 @@ if (isset($_GET['reset'])) {
     header("Location: " . $_SERVER['PHP_SELF']);
     exit;
 }
+
+//for media fetch
+function getMediaByLocation($location)
+{
+    // The child URL: media-file/{location}
+    $url = URL_MEDIA . '/' . $location;
+    $result = callApi($url, 'GET');
+
+    if ($result['code'] === 200 && isset($result['body']['data'])) {
+        return $result['body']['data'];
+    }
+
+    return null;
+}
+
+// Fetch data for your frontend
+$sliderImages = getMediaByLocation('slider');   // Returns an array
+$scheduleImage = getMediaByLocation('schedule');

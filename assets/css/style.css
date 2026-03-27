@@ -20,13 +20,15 @@
     --radius-sm:  8px;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
 /* ── Base ── */
 body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: "Montserrat", sans-serif;
     background: var(--paper);
     color: var(--ink);
     min-height: 100vh;
@@ -366,8 +368,9 @@ input:focus, select:focus {
 /* ── SUCCESS CARD ── */
 .success-card {
     background: var(--white);
-    border-radius: 24px;
-    padding: 40px 32px 36px;
+    /* border-radius: 24px; */
+    /* padding: 40px 32px 36px; */
+    padding-bottom: 2rem;
     box-shadow:
         0 0 0 1px rgba(30,34,53,0.06),
         0 24px 60px rgba(30,34,53,0.13);
@@ -378,7 +381,7 @@ input:focus, select:focus {
 }
  
 /* Animated shimmer rainbow top bar */
-.success-card::before {
+/* .success-card::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
@@ -387,7 +390,7 @@ input:focus, select:focus {
         #25D366 0%, #e8a020 25%, #ff0069 50%, #ff0000 75%, #25D366 100%);
     background-size: 200% auto;
     animation: shimmer 3s linear infinite;
-}
+} */
  
 @keyframes shimmer {
     to { background-position: 200% center; }
@@ -604,6 +607,11 @@ input:focus, select:focus {
     padding: 3px 8px;
     border-radius: 20px;
 }
+
+.common-content{
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
  
 /* ── SOCIAL GRID ── */
 .social-grid {
@@ -775,7 +783,7 @@ footer a { color: var(--primary); text-decoration: none; }
 
 @media (max-width: 600px) {
     .stats-row { gap: 20px; }
-    .form-card, .success-card { padding: 30px 22px; }
+    /* .form-card, .success-card { padding: 30px 22px; } */
     .features { padding: 60px 5vw; }
 }
 
@@ -909,6 +917,25 @@ footer a { color: var(--primary); text-decoration: none; }
 /* ── append to style.css ── */
 
 /* Schedule image */
+.class-schedule-title{
+    color: var(--primary);
+    margin-top: 1.5rem;
+    font-weight: 900;
+    font-size: 42px;
+}
+
+.zoom-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; 
+    margin-bottom: 1rem;
+}
+
+.zoom-logo img{
+    height: 50px;
+}
+
 .schedule-card {
     border-radius: 12px;
     overflow: hidden;
@@ -1106,4 +1133,108 @@ footer a { color: var(--primary); text-decoration: none; }
     .community-nudge {
         flex-direction: column;
     }
+}
+
+/* ── MAIN SLIDER ── */
+.main-slider {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(30,34,53,0.12);
+    background: #0b0c10;
+    aspect-ratio: 16/9;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+}
+
+.slide.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Prev / Next arrows */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: background 0.15s, transform 0.15s;
+    user-select: none;
+}
+
+.slider-arrow:hover {
+    background: rgba(232,160,32,0.7);
+    transform: translateY(-50%) scale(1.08);
+}
+
+.slider-arrow.prev { left: 10px; }
+.slider-arrow.next { right: 10px; }
+
+/* Dots */
+.slider-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    border: none;
+    padding: 0;
+}
+
+.slider-dot.active {
+    background: var(--gold);
+    transform: scale(1.3);
+}
+
+/* ── FEATURED VIDEO ── */
+.featured-video-wrap {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+    margin-bottom: 4px;
+}
+
+.featured-video-wrap video {
+    width: 100%;
+    display: block;
+    object-fit: cover;
 }

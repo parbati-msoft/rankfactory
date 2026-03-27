@@ -230,3 +230,67 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// ── MAIN SLIDER ──
+document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.querySelector('.main-slider');
+    if (slider) {
+        const slides = slider.querySelectorAll('.slide');
+        if (slides.length > 1) {
+            let current = 0;
+            let timer;
+
+            // Inject arrows
+            slider.insertAdjacentHTML('beforeend', `
+                <button class="slider-arrow prev" aria-label="Previous">&#8592;</button>
+                <button class="slider-arrow next" aria-label="Next">&#8594;</button>
+                <div class="slider-dots"></div>
+            `);
+
+            // Inject dots
+            const dotsWrap = slider.querySelector('.slider-dots');
+            slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+                dot.addEventListener('click', () => goTo(i));
+                dotsWrap.appendChild(dot);
+            });
+
+            function goTo(index) {
+                slides[current].classList.remove('active');
+                dotsWrap.children[current].classList.remove('active');
+                current = (index + slides.length) % slides.length;
+                slides[current].classList.add('active');
+                dotsWrap.children[current].classList.add('active');
+                resetTimer();
+            }
+
+            function resetTimer() {
+                clearInterval(timer);
+                timer = setInterval(() => goTo(current + 1), 4000);
+            }
+
+            // Init
+            slides[0].classList.add('active');
+            slider.querySelector('.prev').addEventListener('click', () => goTo(current - 1));
+            slider.querySelector('.next').addEventListener('click', () => goTo(current + 1));
+
+            // Pause on hover
+            slider.addEventListener('mouseenter', () => clearInterval(timer));
+            slider.addEventListener('mouseleave', resetTimer);
+
+            // Touch swipe support
+            let touchStartX = 0;
+            slider.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+            slider.addEventListener('touchend', e => {
+                const diff = touchStartX - e.changedTouches[0].clientX;
+                if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+            });
+
+            resetTimer();
+        } else if (slides.length === 1) {
+            // Single image — just show it, no controls needed
+            slides[0].classList.add('active');
+        }
+    }
+});
