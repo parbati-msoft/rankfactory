@@ -93,7 +93,7 @@ header {
     transition: transform 0.15s, box-shadow 0.15s;
 }
 
-.hero-left{
+.hero-left img{
     width: 100%;
 }
 
