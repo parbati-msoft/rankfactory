@@ -306,9 +306,17 @@ require_once __DIR__ . '/includes/api.php';
 
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="course">Stream/Faculty</label>
-                                    <select id="course" name="course">
-                                        <option value="science">Class 12 | Science</option>
+                                    <label for="batch_id">Stream/Faculty</label>
+                                    <select id="batch_id" name="batch_id" required>
+                                        <?php if (!empty($batches)): ?>
+                                            <?php foreach ($batches as $batch): ?>
+                                                <option value="<?= htmlspecialchars($batch['id']) ?>">
+                                                    <?= htmlspecialchars($batch['name']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <option value="">No active faculty found</option>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
                                 <div class="form-group">

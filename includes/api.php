@@ -25,13 +25,12 @@ $isLocal = in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']) || $_SERVER['
 if ($isLocal) {
     define('API_BASE_URL', $_ENV['API_BASE_URL_LOCAL']);
     $courseId = $_ENV['COURSE_ID_LOCAL'];
-    $batchId  = $_ENV['BATCH_ID_LOCAL'];
 } else {
     define('API_BASE_URL', $_ENV['API_BASE_URL_PROD']);
     $courseId = $_ENV['COURSE_ID_PROD'];
-    $batchId  = $_ENV['BATCH_ID_PROD'];
 }
 
+define('URL_BATCHES', API_BASE_URL . "/course/{$courseId}/batches");
 define('URL_REGISTER_STUDENT', API_BASE_URL . '/register-student');
 define('URL_INSTITUTIONS',      API_BASE_URL . '/institutions');
 define('URL_MEDIA', API_BASE_URL . '/media-file');
@@ -73,6 +72,12 @@ function callApi($url, $method = 'GET', $data = [])
 $instList = callApi(URL_INSTITUTIONS, 'GET');
 $institutions = ($instList['code'] === 200) ? $instList['body'] : [];
 
+$batchList = callApi(URL_BATCHES, 'GET');
+$batches = [];
+if ($batchList['code'] === 200 && isset($batchList['body']['batches'])) {
+    $batches = $batchList['body']['batches'];
+}
+
 // 2. Handle Form Submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $submitted = true;
@@ -84,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         'contact'        => trim($_POST['contact'] ?? ''),
         'district'       => trim($_POST['district'] ?? ''),
         'course_id'      => $courseId,
-        'batch_id'       => $batchId,
+        'batch_id'       => trim($_POST['batch_id'] ?? ''),
         'role'           => 'Student',
         'institution_id' => trim($_POST['institution_id'] ?? null),
     ];
