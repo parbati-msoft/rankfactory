@@ -250,6 +250,25 @@ require_once __DIR__ . '/includes/api.php';
                             </div>
                         </div>
 
+                        <!-- ── FREE STUDY RESOURCES ── -->
+                        <div class="action-divider"><span>📚 Free Study Resources</span></div>
+
+                        <div class="notes-section common-content">
+                            <p class="notes-sub">Select your Faculty to view available notes</p>
+
+                            <!-- Batch tabs -->
+                            <div class="batch-tabs">
+                                <?php foreach ($batches as $batch): ?>
+                                    <button class="batch-btn" onclick="loadUnits(<?= $batch['id'] ?>, this)">
+                                        <?= htmlspecialchars($batch['name']) ?>
+                                    </button>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <!-- Units + Notes container -->
+                            <div id="units-container"></div>
+                        </div>
+
                         <button type="button" id="btn-register-another" class="secondary-outline-btn">
                             Register Another Student
                         </button>
@@ -411,6 +430,10 @@ require_once __DIR__ . '/includes/api.php';
         if (localStorage.getItem('rf_registered') === 'true') {
             document.documentElement.classList.add('hide-form-initially');
         }
+
+        window.APP_CONFIG = {
+            baseUrl: '<?= API_BASE_URL ?>'
+        };
     </script>
     <script src="assets/js/main.js"></script>
 

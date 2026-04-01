@@ -294,3 +294,90 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+const BASE_URL = window.APP_CONFIG.baseUrl;
+/**
+ * Load Units for a specific Batch
+ */
+async function loadUnits(batchId, btn) {
+    // Active tab highlight
+    document.querySelectorAll('.batch-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    document.querySelectorAll('.unit-item.is-open').forEach(item => {
+        item.classList.remove('is-open');
+        item.querySelector('.notes-list').style.display = 'none';
+        item.querySelector('.unit-toggle-btn').textContent = 'View Notes';
+    });
+
+    const container = document.getElementById('units-container');
+    container.innerHTML = '<div class="notes-state loading">⏳ Loading units...</div>';
+
+    try {
+        const response = await fetch(`${BASE_URL}/free-units/${batchId}`);
+        const data = await response.json();
+
+        if (data.status === 'success' && data.classUnits.length > 0) {
+            container.innerHTML = '<div class="units-list"></div>';
+            const list = container.querySelector('.units-list');
+
+            data.classUnits.forEach(unit => {
+                list.insertAdjacentHTML('beforeend', `
+                    <div class="unit-item" id="unit-wrap-${unit.id}">
+                        <div class="unit-header">
+                            <span class="unit-name">📘 ${unit.name}</span>
+                            <button class="unit-toggle-btn" onclick="loadNotes(${unit.id}, this)">View Notes</button>
+                        </div>
+                        <div id="notes-unit-${unit.id}" class="notes-list" style="display:none;"></div>
+                    </div>
+                `);
+            });
+        } else {
+            container.innerHTML = '<div class="notes-state empty">📭 No subjects found for this faculty.</div>';
+        }
+    } catch (error) {
+        container.innerHTML = '<div class="notes-state error">⚠️ Error loading subjects. Please try again.</div>';
+    }
+}
+
+async function loadNotes(unitId, btn) {
+    const noteDiv = document.getElementById(`notes-unit-${unitId}`);
+    const unitWrap = document.getElementById(`unit-wrap-${unitId}`);
+
+    // Toggle if already loaded
+    if (noteDiv.dataset.loaded === 'true') {
+        const isOpen = noteDiv.style.display === 'block';
+        noteDiv.style.display = isOpen ? 'none' : 'block';
+        btn.textContent = isOpen ? 'View Notes' : 'Hide Notes';
+        unitWrap.classList.toggle('is-open', !isOpen);
+        return;
+    }
+
+    noteDiv.innerHTML = '<div class="notes-state loading">⏳ Loading notes...</div>';
+    noteDiv.style.display = 'block';
+    unitWrap.classList.add('is-open');
+    btn.textContent = 'Hide Notes';
+
+    try {
+        const response = await fetch(`${BASE_URL}/free-notes/${unitId}`);
+        const data = await response.json();
+
+        if (data.status === 'success' && data.notes.length > 0) {
+            let html = '';
+            data.notes.forEach(note => {
+                html += `
+                    <a href="${note.link}" target="_blank" class="note-link">
+                        <span class="note-link-name">📄 ${note.name}</span>
+                        <span class="note-badge">Open</span>
+                    </a>`;
+            });
+            noteDiv.innerHTML = html;
+        } else {
+            noteDiv.innerHTML = '<div class="notes-state empty">📭 No notes available for this subject yet.</div>';
+        }
+
+        noteDiv.dataset.loaded = 'true';
+    } catch (error) {
+        noteDiv.innerHTML = '<div class="notes-state error">⚠️ Error loading notes.</div>';
+    }
+}
