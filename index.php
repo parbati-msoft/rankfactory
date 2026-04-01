@@ -254,7 +254,9 @@ require_once __DIR__ . '/includes/api.php';
                         <div class="action-divider"><span>📚 Free Study Resources</span></div>
 
                         <div class="notes-section common-content">
-                            <p class="notes-sub">Select your Faculty to view available notes</p>
+                            <?php if (count($batches) > 1): ?>
+                                <p class="notes-sub">Select your Faculty to view available notes</p>
+                            <?php endif; ?>
 
                             <!-- Batch tabs -->
                             <div class="batch-tabs">
