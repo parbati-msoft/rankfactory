@@ -1,7 +1,11 @@
 <?php
 require_once __DIR__ . '/includes/api.php';
 
-$url = trim($_GET['url'] ?? '', '/');
+// local apache
+// $url = trim($_GET['url'] ?? '', '/');
+
+// production nginx
+$url = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
 // Global variables for existing features
 $success = false;
