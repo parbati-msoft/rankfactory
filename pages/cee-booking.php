@@ -245,17 +245,64 @@
                 </div>
             </div>
 
+            <div id="partial-success-notice" class="cee-alert cee-alert--info" style="display:none; background: #f0f7ff; border: 1px solid #cce3ff; border-left: 5px solid #2196f3; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.4em;">✅</span>
+                        <div>
+                            <strong id="partial-title" style="display: block; color: #0d47a1; font-size: 1.1em;">Status</strong>
+                            <p id="partial-desc" style="margin: 0; font-size: 0.95em; color: #1565c0;"></p>
+                        </div>
+                    </div>
+
+                    <div style="background: white; padding: 12px; border-radius: 6px; border: 1px dashed #2196f3;">
+                        <p style="margin: 0 0 10px 0; font-size: 0.85em; font-weight: bold; color: #333;">Access your account using your credentials here,</p>
+
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                            <a href="https://etutorclass.com/login" class="cee-btn" style="background: #2196f3; color: white; padding: 6px 15px; font-size: 0.85em; text-decoration: none; border-radius: 4px;">
+                                Login to Study
+                            </a>
+
+                            <div style="display: flex; gap: 8px; align-items: center; border-left: 1px solid #ddd; padding-left: 10px;">
+                                <span style="font-size: 0.75em; color: #666;">Get App:</span>
+                                <a href="https://etutorclass.com/app-download" target="_blank">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store" style="height: 24px;">
+                                </a>
+                                <a href="https://apps.apple.com/np/app/e-tutor-class/id6748941984" target="_blank">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" style="height: 24px;">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- ══ STEP 3: SUCCESS ══ -->
             <div class="cee-step" id="step-success" style="display:none">
                 <div class="booking-success">
                     <div class="booking-success-icon">🎓</div>
                     <h2 class="booking-success-title">Pre-Booking Confirmed!</h2>
-                    <p class="booking-success-sub">Your seat has been reserved. Our team will contact you shortly with payment and class details.</p>
+                    <p class="booking-success-sub">Your seat has been reserved. You can now access your course materials, live classes, and MCQs.</p>
+
                     <div class="booking-success-detail" id="booking-success-detail"></div>
-                    <a href="https://whatsapp.com/channel/0029Vb7YxiSKLaHeXvJNiL36" target="_blank" class="cee-btn cee-btn--wa">
-                        💬 Join WhatsApp for Updates
+
+                    <a href="https://etutorclass.com/login" class="cee-btn cee-btn--gold" style="margin-bottom: 20px; width: 100%; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span>💻 Login to Access Classes & MCQs</span>
                     </a>
-                    <a href="cee-booking" class="cee-btn cee-btn--outline">← Back to Home</a>
+
+                    <div class="app-download-section" style="margin: 25px 0; padding-top: 20px; border-top: 1px solid #eee;">
+                        <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">Download our mobile app for the best experience:</p>
+                        <div class="app-buttons" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <a href="https://etutorclass.com/app-download" target="_blank" class="app-link">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" style="height: 40px;">
+                            </a>
+                            <a href="https://apps.apple.com/np/app/e-tutor-class/id6748941984" target="_blank" class="app-link">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Download on the App Store" style="height: 40px;">
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="cee-booking" class="cee-btn cee-btn--outline" style="width: 100%;">← Back to Home</a>
                 </div>
             </div>
 

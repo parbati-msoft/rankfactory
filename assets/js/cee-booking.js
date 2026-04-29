@@ -202,9 +202,11 @@
                 const data = await fetchBatchData('online');
                 if (data) {
                     renderCard(data, 'online');
-                    renderSummaryRow(data.name, data.fee);
-                    totalFee += parseFloat(data.fee - data.discount);
-                    selectedOnlinePrice = parseFloat(data.fee - data.discount || 0);
+                    const discount = parseFloat(data.discount || 0);
+                    const netPrice = parseFloat(data.fee) - discount;
+                    renderSummaryRow(data.name, netPrice);
+                    totalFee += netPrice;
+                    selectedOnlinePrice = netPrice;
                     selectedBatchId = data.id; 
                     
                     // Check enrollment specifically for this online batch
@@ -246,6 +248,34 @@
             summaryTotal.innerText = `Rs. ${totalFee.toLocaleString()}`;
             bookingSummary.style.display = totalFee > 0 ? 'block' : 'none';
             batchLoading.style.display = 'none';
+
+            //for booking redirection
+            const onlineSelected = chkOnline.checked;
+            const physicalSelected = chkPhysical.checked;
+
+            // 2. Logic: Show partial success if ONE selected item is booked but the OTHER is not.
+            if (onlineSelected && physicalSelected) {
+                if (isOnlineBooked && !isPhysicalBooked) {
+                    showPartialStatus("Online Class Enrolled", "You are already a student of the Online batch. You only need to complete pre-booking for the Physical class.");
+                } else if (!isOnlineBooked && isPhysicalBooked) {
+                    showPartialStatus("Physical Class Enrolled", "You are already enrolled in the Physical class. You only need to proceed with the Online batch booking.");
+                }
+            } 
+            // Handle cases where only one type is checked but it's already booked
+            else if ((onlineSelected && isOnlineBooked) || (physicalSelected && isPhysicalBooked)) {
+                showPartialStatus("Already Enrolled", "You have already joined this class. Please log in to your account to start learning.");
+            }
+        }
+
+        function showPartialStatus(title, desc) {
+            const partialNotice = document.getElementById('partial-success-notice');
+            const partialTitle = document.getElementById('partial-title');
+            const partialDesc = document.getElementById('partial-desc');
+            
+            partialNotice.style.display = 'block';
+            partialTitle.innerText = title;
+            // Append a hint about the app to the description
+            partialDesc.innerText = desc + " You can start watching your existing videos on our app.";
         }
 
         // ══ 4. PAYMENT STEP ══
@@ -392,6 +422,26 @@
         }
 
         function renderCard(data, type) {
+            // Standardize price and discount keys
+            const originalPrice = parseFloat(data.fee || data.price || 0);
+            const discount = parseFloat(data.discount || 0);
+            const finalPrice = originalPrice - discount;
+
+            // Create the price display logic
+            let priceHTML = '';
+            if (discount > 0) {
+                priceHTML = `
+                    <span style="text-decoration: line-through; color: #888; font-size: 0.9em;">
+                        Rs. ${originalPrice.toLocaleString()}
+                    </span>
+                    <span style="color: #d4af37; font-weight: bold; margin-left: 8px;">
+                        Rs. ${finalPrice.toLocaleString()}
+                    </span>
+                `;
+            } else {
+                priceHTML = `<span>Rs. ${originalPrice.toLocaleString()}</span>`;
+            }
+
             const cardHtml = `
                 <div class="batch-card" id="card-${type}-${data.id}">
                     <div class="batch-card-header">
@@ -401,8 +451,8 @@
                         </span>
                     </div>
                     <div class="batch-card-body">
-                        <p>Fee: Rs. ${data.fee || data.price}</p>
-                        </div>
+                        <p>Fee: ${priceHTML}</p>
+                    </div>
                 </div>
             `;
             batchCards.insertAdjacentHTML('beforeend', cardHtml);
