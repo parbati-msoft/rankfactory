@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/api.php';
 
-$url = $_GET['url'] ?? '';
+$url = trim($_GET['url'] ?? '', '/');
 
 // Global variables for existing features
 $success = false;
