@@ -1,0 +1,649 @@
+/* ============================================================
+   assets/css/cee-booking.css
+   CEE Pre-Booking Page — Design System Extension
+   ============================================================ */
+
+/* ── HEADER TAG ── */
+.header-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(232,160,32,0.1);
+    border: 1px solid rgba(232,160,32,0.25);
+    padding: 5px 14px;
+    border-radius: 20px;
+}
+
+/* ── CEE HERO ── */
+.cee-hero {
+    position: relative;
+    padding: 40px 5vw 30px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.cee-hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 70% 60% at 50% 0%, rgba(232,160,32,0.13) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 100%, rgba(99,102,241,0.07) 0%, transparent 70%);
+    z-index: -1;
+}
+
+.cee-hero-inner { max-width: 640px; margin: auto; }
+
+.cee-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,160,32,0.1);
+    border: 1px solid rgba(232,160,32,0.28);
+    color: var(--amber);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+}
+
+.cee-hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--slate);
+    line-height: 1.1;
+    margin-bottom: 16px;
+}
+
+.cee-hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 500px;
+    margin: auto;
+}
+
+/* ── MAIN LAYOUT ── */
+.cee-main { padding: 20px 5vw 40px; }
+
+.cee-container {
+    max-width: 680px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* ── STEP CARD ── */
+.cee-step {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 36px 32px;
+    box-shadow:
+        0 0 0 1px rgba(30,34,53,0.06),
+        0 16px 48px rgba(30,34,53,0.1);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+    animation: fadeUp 0.4s ease both;
+}
+
+.cee-step::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+}
+
+.step-badge {
+    display: inline-block;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(232,160,32,0.1);
+    border: 1px solid rgba(232,160,32,0.25);
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+}
+
+.step-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--slate);
+    margin-bottom: 6px;
+}
+
+.step-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+
+/* ── FORM ── */
+.cee-form { display: flex; flex-direction: column; gap: 16px; }
+
+.cee-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.cee-field { display: flex; flex-direction: column; gap: 6px; }
+
+.cee-field label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--slate);
+}
+
+.cee-field .req { color: var(--gold); margin-left: 2px; }
+
+.cee-field input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid rgba(30,34,53,0.12);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--paper);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cee-field input::placeholder { color: #b0b7c3; }
+
+.cee-field input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(232,160,32,0.14);
+    background: var(--white);
+}
+
+/* ── BUTTONS ── */
+.cee-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border-radius: var(--radius-sm);
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.cee-btn:hover { transform: translateY(-2px); }
+.cee-btn:active { transform: translateY(0); }
+
+.cee-btn--primary {
+    background: linear-gradient(135deg, var(--slate), var(--slate-mid));
+    color: var(--paper);
+    box-shadow: 0 4px 16px rgba(30,34,53,0.2);
+}
+
+.cee-btn--primary:hover { box-shadow: 0 8px 28px rgba(30,34,53,0.3); }
+
+.cee-btn--gold {
+    background: linear-gradient(135deg, #e8a020, #f5c842);
+    color: var(--slate);
+    box-shadow: 0 4px 16px rgba(232,160,32,0.3);
+}
+
+.cee-btn--gold:hover { box-shadow: 0 8px 28px rgba(232,160,32,0.45); }
+
+.cee-btn--wa {
+    background: linear-gradient(135deg, #25D366, #128c7e);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(37,211,102,0.25);
+}
+
+.cee-btn--outline {
+    background: transparent;
+    color: var(--slate);
+    border: 1.5px solid rgba(30,34,53,0.15);
+}
+
+.cee-btn--outline:hover { background: var(--paper); }
+
+.cee-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* ── ALERT ── */
+.cee-alert {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+.cee-alert--error {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #dc2626;
+}
+
+.cee-alert--success {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #166534;
+}
+
+/* ── MODE TOGGLES ── */
+.mode-toggles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.mode-toggle { cursor: pointer; }
+.mode-toggle input[type="checkbox"] { display: none; }
+
+.mode-toggle-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 18px 12px;
+    border-radius: 14px;
+    border: 2px solid rgba(30,34,53,0.1);
+    background: var(--paper);
+    transition: all 0.2s;
+    position: relative;
+    user-select: none;
+}
+
+.mode-toggle-card:hover {
+    border-color: var(--gold);
+    background: rgba(232,160,32,0.04);
+}
+
+.mode-check {
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 13px;
+    color: var(--gold);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.mode-toggle input:checked + .mode-toggle-card {
+    border-color: var(--gold);
+    background: rgba(232,160,32,0.07);
+    box-shadow: 0 0 0 3px rgba(232,160,32,0.12);
+}
+
+.mode-toggle input:checked + .mode-toggle-card .mode-check { opacity: 1; }
+
+.mode-icon { font-size: 28px; }
+
+.mode-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--slate);
+}
+
+/* ── LOADING SPINNER ── */
+.batch-loading {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.batch-loading.visible { display: flex; }
+
+.loading-spinner {
+    width: 20px; height: 20px;
+    border: 2px solid rgba(232,160,32,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+/* ── BATCH CARDS ── */
+.batch-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.batch-card {
+    border: 1.5px solid rgba(30,34,53,0.1);
+    border-radius: 14px;
+    overflow: hidden;
+    animation: fadeUp 0.3s ease both;
+}
+
+.batch-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: var(--slate);
+    color: var(--paper);
+}
+
+.batch-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.batch-card-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--gold);
+}
+
+.batch-card-body {
+    padding: 14px 18px;
+    background: var(--white);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.batch-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.batch-info-label {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.batch-info-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--slate);
+}
+
+.batch-type-pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+    padding: 2px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+}
+
+.batch-type-pill.online   { background: #dbeafe; color: #1d4ed8; }
+.batch-type-pill.physical { background: #dcfce7; color: #166534; }
+
+/* ── BOOKING SUMMARY ── */
+.booking-summary {
+    background: linear-gradient(135deg, #f8f7ff, #fafafa);
+    border: 1.5px solid #e0e7ff;
+    border-radius: 14px;
+    padding: 20px;
+    margin-top: 4px;
+    animation: fadeUp 0.3s ease both;
+}
+
+.summary-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--slate);
+    margin-bottom: 14px;
+}
+
+.summary-icon { font-size: 16px; }
+
+.summary-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #374151;
+}
+
+.summary-row-price { font-weight: 600; color: var(--slate); }
+
+.summary-divider { height: 1px; background: #e0e7ff; margin: 12px 0; }
+
+.summary-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--slate);
+    margin-bottom: 20px;
+}
+
+.summary-total {
+    font-size: 20px;
+    color: var(--gold);
+}
+
+/* Pre-booking amount field */
+.prebooking-field { margin-bottom: 16px; }
+
+.prebooking-field label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--slate);
+    margin-bottom: 8px;
+}
+
+.prebooking-hint {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    background: rgba(30,34,53,0.06);
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+.prebooking-input-wrap {
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--gold);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(232,160,32,0.1);
+}
+
+.prebooking-prefix {
+    padding: 12px 14px;
+    background: rgba(232,160,32,0.08);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--amber);
+    border-right: 1.5px solid rgba(232,160,32,0.2);
+    white-space: nowrap;
+}
+
+.prebooking-input-wrap input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 12px 14px;
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--slate);
+    background: transparent;
+    width: 100%;
+    -moz-appearance: textfield;
+}
+
+.prebooking-input-wrap input::-webkit-outer-spin-button,
+.prebooking-input-wrap input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+.prebooking-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+/* ── BOOKING SUCCESS ── */
+.booking-success {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.booking-success-icon {
+    font-size: 52px;
+    margin-bottom: 16px;
+    animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.booking-success-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--slate);
+    margin-bottom: 10px;
+}
+
+.booking-success-sub {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 20px;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.booking-success-detail {
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border: 1.5px solid #bae6fd;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.success-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(3,105,161,0.1);
+}
+
+.success-detail-row:last-child { border-bottom: none; }
+
+.success-detail-label { color: #0369a1; font-weight: 500; }
+.success-detail-value { font-weight: 700; color: #0c4a6e; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+    .cee-step { padding: 26px 18px; }
+    .cee-form-row { grid-template-columns: 1fr; }
+    .batch-card-body { grid-template-columns: 1fr 1fr; }
+    .mode-toggles { grid-template-columns: 1fr 1fr; }
+}
+
+/* Payment Tab Styling */
+.pay-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    background: #f4f7f6;
+    padding: 6px;
+    border-radius: 12px;
+}
+.pay-tab {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    font-family: 'DM Sans', sans-serif;
+}
+.pay-tab.active {
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    color: var(--accent-color);
+}
+
+/* QR and Content */
+.pay-content {
+    animation: fadeIn 0.4s ease;
+}
+.qr-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background: #fff;
+    border: 1px dashed #ddd;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+.qr-image img {
+    width: 150px;
+    border-radius: 10px;
+}
+.file-upload-wrapper {
+    position: relative;
+    border: 2px dashed #ccd3d1;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+.file-upload-wrapper input {
+    position: absolute;
+    width: 100%; height: 100%;
+    top: 0; left: 0; opacity: 0; cursor: pointer;
+}
+.pay-logo { height: 40px; margin-bottom: 15px; }
+
+@media (max-width: 600px) {
+    .qr-container { flex-direction: column; text-align: center; }
+}

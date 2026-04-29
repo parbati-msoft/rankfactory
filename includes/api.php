@@ -1,16 +1,7 @@
 <?php
-
-/**
- * api.php
- * Handles form submission and proxies data to the RankFactory API.
- */
 session_start();
 
-$success   = false;
-$error     = '';
-$submitted = false;
-
-// ── Config ──────────────────────────────────────────────────────────────────
+// 1. LOAD ENV
 if (file_exists(__DIR__ . '/../.env')) {
     $lines = file(__DIR__ . '/../.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     foreach ($lines as $line) {
@@ -19,126 +10,87 @@ if (file_exists(__DIR__ . '/../.env')) {
         $_ENV[trim($name)] = trim($value);
     }
 }
-// Automatically switch between Local and Production
-$isLocal = in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']) || $_SERVER['HTTP_HOST'] === 'localhost';
 
+// 2. CONFIG & CONSTANTS
+$isLocal = in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']) || $_SERVER['HTTP_HOST'] === 'localhost';
 if ($isLocal) {
     define('API_BASE_URL', $_ENV['API_BASE_URL_LOCAL']);
     $courseId = $_ENV['COURSE_ID_LOCAL'];
+    $ceeBatchId = $_ENV['ONLINE_BATCH_ID_LOCAL'];
+    $ceeClassId = $_ENV['PHYSICAL_CLASS_ID_LOCAL'];
 } else {
     define('API_BASE_URL', $_ENV['API_BASE_URL_PROD']);
     $courseId = $_ENV['COURSE_ID_PROD'];
+    $ceeBatchId = $_ENV['ONLINE_BATCH_ID_PROD'];
+    $ceeClassId = $_ENV['PHYSICAL_CLASS_ID_PROD'];
 }
 
 define('URL_BATCHES', API_BASE_URL . "/course/{$courseId}/batches");
 define('URL_REGISTER_STUDENT', API_BASE_URL . '/register-student');
+define('URL_LOGIN_STUDENT', API_BASE_URL . '/login');
 define('URL_INSTITUTIONS',      API_BASE_URL . '/institutions');
 define('URL_MEDIA', API_BASE_URL . '/media-file');
+define('URL_MINI_PROFILE', API_BASE_URL . '/mini-profile');
+define('URL_ONLINE_BATCH_DETAIL', API_BASE_URL . '/batch-details/' . $ceeBatchId);
+define('URL_PHYSICAL_BATCH_DETAIL', API_BASE_URL . '/physical-class/' . $ceeClassId);
+define('URL_MY_BOOKINS', API_BASE_URL . '/my/course/bookings/all');
+define('URL_ONLINE_COURSE_BOOKING', API_BASE_URL . '/my/course/cee-bookinss');
+define('URL_PHYSICAL_BOOKING_CHECK', API_BASE_URL . '/my/physical-class/my-booking');
+define('URL_PHYSICAL_BOOKING_STORE', API_BASE_URL . '/my/physical-class/booking');
 define('API_TIMEOUT', $_ENV['API_TIMEOUT'] ?? 15);
 
-/**
- * Helper function to handle cURL requests
- */
+// 3. THE CORE FUNCTION
 function callApi($url, $method = 'GET', $data = [])
 {
     $ch = curl_init($url);
-    $headers = ['Content-Type: application/json', 'Accept: application/json'];
+
+    $headers = ['Accept: application/json'];
+
+    $hasFile = false;
+
+    if (is_array($data)) {
+        foreach ($data as $value) {
+            if ($value instanceof CURLFile) {
+                $hasFile = true;
+                break;
+            }
+        }
+    }
+
+    if (!$hasFile) {
+        $headers[] = 'Content-Type: application/json';
+    }
+
+    if (!empty($_SESSION['rf_token'])) {
+        $headers[] = 'Authorization: Bearer ' . $_SESSION['rf_token'];
+    }
 
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST  => $method,
         CURLOPT_HTTPHEADER     => $headers,
         CURLOPT_TIMEOUT        => API_TIMEOUT,
-        CURLOPT_SSL_VERIFYPEER => false, // Set true in production
+        CURLOPT_SSL_VERIFYPEER => false,
     ]);
-
     if (($method === 'POST' || $method === 'PUT') && !empty($data)) {
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-    }
-
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curlErr  = curl_error($ch);
-    curl_close($ch);
-
-    return [
-        'body' => json_decode($response, true),
-        'code' => $httpCode,
-        'error' => $curlErr
-    ];
-}
-
-// 1. Fetch Institutions for the <select> dropdown
-$instList = callApi(URL_INSTITUTIONS, 'GET');
-$institutions = ($instList['code'] === 200) ? $instList['body'] : [];
-
-$batchList = callApi(URL_BATCHES, 'GET');
-$batches = [];
-if ($batchList['code'] === 200 && isset($batchList['body']['batches'])) {
-    $batches = $batchList['body']['batches'];
-}
-
-// 2. Handle Form Submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
-    $submitted = true;
-
-    // Data for Student Registration
-    $studentData = [
-        'name'           => trim($_POST['name'] ?? ''),
-        'email'          => trim($_POST['email'] ?? ''),
-        'contact'        => trim($_POST['contact'] ?? ''),
-        'district'       => trim($_POST['district'] ?? ''),
-        'course_id'      => $courseId,
-        'batch_id'       => trim($_POST['batch_id'] ?? ''),
-        'role'           => 'Student',
-        'institution_id' => trim($_POST['institution_id'] ?? null),
-    ];
-
-    // Call API: Register Student
-    $regResult = callApi(URL_REGISTER_STUDENT, 'POST', $studentData);
-
-    if ($regResult['code'] === 201) {
-        $_SESSION['registration_success'] = true;
-        $_SESSION['is_existing'] = (bool)($regResult['body']['is_existing'] ?? false);
-        echo "<script>localStorage.setItem('rf_registered', 'true');</script>";
-        header("Location: " . $_SERVER['PHP_SELF'] . "?success=1#register");
-        exit;
-    } else {
-        // Handle Laravel Validation Errors
-        $body = $regResult['body'];
-        if (isset($body['errors'])) {
-            // Flatten Laravel's nested error array into a readable string
-            $error = implode(' ', array_map(fn($e) => $e[0], $body['errors']));
+        if ($hasFile) {
+            // Send as multipart/form-data (required for files)
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         } else {
-            $error = $body['message'] ?? $body['error'] ?? 'Registration could not be completed at this time. Please try again.';
+            // Send as raw JSON
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         }
     }
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return ['body' => json_decode($response, true), 'code' => $httpCode];
 }
 
-// If the user clicked "Register Another", clear the session
-if (isset($_GET['reset'])) {
-    session_start();
-    session_unset();
-    session_destroy();
-    // Redirect to a completely clean URL
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit;
-}
-
-//for media fetch
+// 4. HELPER FUNCTIONS
 function getMediaByLocation($location)
 {
-    // The child URL: media-file/{location}
     $url = URL_MEDIA . '/' . $location;
     $result = callApi($url, 'GET');
-
-    if ($result['code'] === 200 && isset($result['body']['data'])) {
-        return $result['body']['data'];
-    }
-
-    return null;
+    return ($result['code'] === 200) ? $result['body']['data'] : null;
 }
-
-// Fetch data for your frontend
-$sliderImages = getMediaByLocation('slider');   // Returns an array
-$scheduleImage = getMediaByLocation('schedule');

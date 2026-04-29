@@ -80,8 +80,8 @@ header {
 .logo-text span { color: var(--primary); }
 
 .header-cta {
-    background: var(--slate);
-    color: var(--primary);
+    background: var(--primary);
+    color: var(--paper);
     border: none;
     padding: 9px 22px;
     border-radius: 50px;
